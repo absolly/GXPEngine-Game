@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="GXPEngine/GXPEngine.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="GXPEngine/Player.cs">
+    <Files>
+      <File FileName="GXPEngine/Player.cs" Line="12" Column="25" />
+      <File FileName="GXPEngine/MoveableSprite.cs" Line="62" Column="3" />
+      <File FileName="GXPEngine/Level.cs" Line="29" Column="4" />
+      <File FileName="GXPEngine/Coin.cs" Line="15" Column="18" />
+      <File FileName="GXPEngine/PickupCoin.cs" Line="7" Column="1" />
+      <File FileName="GXPEngine/GXPEngine/GameObject.cs" Line="188" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
