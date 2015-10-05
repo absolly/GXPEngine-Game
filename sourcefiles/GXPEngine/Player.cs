@@ -13,13 +13,12 @@ namespace GXPEngine
 
 		public Player () : base ("colors.png", 2, 3)
 		{
-			_PickupCoin = new PickupCoin();
+			_PickupCoin = new PickupCoin ();
 			AddChild (_PickupCoin);
 			_velocityY = 1.0f;
 			_moveSpeed = 8;
 			_frame = 0.0f;
 			_grounded = false;
-
 			SetFrame (1);
 			this.x = 0;
 			this.y = 0;
@@ -45,7 +44,7 @@ namespace GXPEngine
 			if (Input.GetKey (Key.LEFT)) {
 				move (-_moveSpeed, 0);
 			}
-			if ((Input.GetKeyDown (Key.UP) || Input.GetKeyDown (Key.Z)|| Input.GetKeyDown (Key.SPACE) ) && _grounded) {
+			if ((Input.GetKeyDown (Key.UP) || Input.GetKeyDown (Key.Z) || Input.GetKeyDown (Key.SPACE)) && _grounded) {
 				_velocityY -= 10;
 	
 			}
@@ -56,11 +55,14 @@ namespace GXPEngine
 				setScore (1);
 			}
 		}
-		void setScore(int setScore){
+
+		void setScore (int setScore)
+		{
 			_score += setScore;
 		}
 
-		public int getScore(){
+		public int getScore ()
+		{
 			return _score;
 		}
 			

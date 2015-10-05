@@ -21,7 +21,6 @@ namespace GXPEngine
 			string csvContents = File.ReadAllText (csvPath);
 
 			//Split the file into lines
-			Console.WriteLine ("Parsing LevelData");
 			try { /* UNIX line endings */
 				string[] dataArray = csvContents.Split (new[]{ "data=\n" }, StringSplitOptions.None);
 				string[] linesArray = dataArray [1].Split (new[]{ ",\n" }, StringSplitOptions.None);

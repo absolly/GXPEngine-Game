@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-
-
+using System.Drawing;
 
 namespace GXPEngine
 {
@@ -10,19 +8,30 @@ namespace GXPEngine
 
 		Player player;
 		Coin coin;
+		ScoreBoard scoreBoard;
+		private int _score;
 
 		public Level () : base ()
 		{
 			
 			game.Add (this);
 
-			coin = new Coin ();
+			Canvas canvas = new Canvas(game.width, game.height);
+			canvas.graphics.FillRectangle(new SolidBrush(Color.FromArgb(125,106,148)), new Rectangle(0, 0, game.width, game.height));
+			AddChild(canvas);
+
+		
 			player = new Player ();
+			scoreBoard = new ScoreBoard ();
 			LevelImporter levelImporter = new LevelImporter ();
 			TileRenderer tileRenderer = new TileRenderer ();
 			tileRenderer.GetTiles (levelImporter);
 			this.AddChild (tileRenderer);
-			this.AddChild (coin);
+			for(int i = 0; i < 100; i++){
+				coin = new Coin ();
+				this.AddChild (coin);
+
+			}
 
 			Console.WriteLine ("Level Loaded");
 			Console.WriteLine ("\nLoading Player");
@@ -30,33 +39,15 @@ namespace GXPEngine
 			this.AddChild (player);
 			Console.WriteLine ("Player Loaded");
 
+			this.AddChild (scoreBoard);
+
 		}
 
 		void Update ()
 		{
-//			TestCollision ();
-
+			_score = player.getScore ();
+			scoreBoard.drawScore (_score);
 		}
-//		void TestCollision(){
-//			if (player.HitTest (coin)) {
-//				coin.Destroy ();
-//			}
-//			foreach (AnimationSprite tile in tiles) {
-//
-//
-//				if (player.HitTest (tile)) {
-//					if (tile.currentFrame != 0) {
-//				    	player.MoveBack (true);
-//
-//
-//					}
-//					else {
-//						player.MoveBack (false);
-//					}
-//				} 
-//
-//			}
-//		}
 
 
 	}

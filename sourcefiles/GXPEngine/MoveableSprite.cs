@@ -75,6 +75,7 @@ namespace GXPEngine
 		*/
 		protected bool checkPickup ()
 		{
+			pickedUp = false;
 			foreach (GameObject other in GetCollisions()) {
 				if (other is Coin) {
 					Coin coin = other as Coin;

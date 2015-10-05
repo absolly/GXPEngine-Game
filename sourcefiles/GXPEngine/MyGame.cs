@@ -15,9 +15,6 @@ public class MyGame : Game
  
 	public MyGame () : base (1280, 720, false)
 	{
-		Canvas canvas = new Canvas(game.width, game.height);
-		canvas.graphics.FillRectangle(new SolidBrush(Color.FromArgb(125,106,148)), new Rectangle(0, 0, game.width, game.height));
-		AddChild(canvas);
 
 		Level level = new Level ();
 		AddChild (level);

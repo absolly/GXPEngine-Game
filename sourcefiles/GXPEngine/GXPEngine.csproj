@@ -71,6 +71,7 @@
     <Compile Include="Tile.cs" />
     <Compile Include="MoveableSprite.cs" />
     <Compile Include="PickupCoin.cs" />
+    <Compile Include="ScoreBoard.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GXPEngine\" />
