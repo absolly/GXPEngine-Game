@@ -8,13 +8,11 @@ namespace GXPEngine
 		private float _velocityY;
 		private int _moveSpeed;
 		private bool _grounded;
-		private PickupCoin _PickupCoin;
 		private int _score = 0;
 
 		public Player () : base ("colors.png", 2, 3)
 		{
-			_PickupCoin = new PickupCoin ();
-			AddChild (_PickupCoin);
+
 			_velocityY = 1.0f;
 			_moveSpeed = 8;
 			_frame = 0.0f;
@@ -26,6 +24,7 @@ namespace GXPEngine
 
 		void Update ()
 		{
+			checkPickup ();
 			_velocityY += 1.0f;
 			_grounded = false;
 			_frame = _frame + 0.5f;
@@ -56,15 +55,40 @@ namespace GXPEngine
 			}
 		}
 
+		/// <summary>
+		/// Sets the score to current score + amount.
+		/// </summary>
+		/// <param name="setScore">Amount to add to score.</param>
 		void setScore (int setScore)
 		{
 			_score += setScore;
 		}
 
+		/// <summary>
+		/// Gets the score.
+		/// </summary>
+		/// <returns>The score.</returns>
 		public int getScore ()
 		{
 			return _score;
 		}
-			
+
+
+		/// <summary>
+		/// Checks if a coin was picked up.
+		/// </summary>
+		/// <returns><c>true</c>, if pickup was detected, <c>false</c> otherwise.</returns>
+		private bool checkPickup ()
+		{
+			bool pickedUp = false;
+			foreach (GameObject other in GetCollisions()) {
+				if (other is Coin) {
+					Coin coin = other as Coin;
+					coin.destoryCoin ();
+					pickedUp = true;
+				}
+			}
+			return pickedUp;
+		}	
 	}
 }

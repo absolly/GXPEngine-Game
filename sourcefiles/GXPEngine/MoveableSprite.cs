@@ -6,17 +6,18 @@ namespace GXPEngine
 	{
 		const bool NOTLANDED = true;
 		const bool LANDED = false;
-		private bool pickedUp = false;
 
 
 		public MoveableSprite (string filename, int cols, int rows) : base (filename, cols, rows)
 		{
 		}
 
-		/*
-		 *  move moves a character, return true if successful, false if not
-		 *
-		 */
+		/// <summary>
+		/// Moves a character
+		/// </summary>
+		/// <param name="moveX">Move x.</param>
+		/// <param name="moveY">Move y.</param>
+		/// <returns><c>true</c>, If successful, <c>false</c> otherwise.</returns>
 		protected bool move (float moveX, float moveY)
 		{
 			x = x + moveX;
@@ -30,12 +31,15 @@ namespace GXPEngine
 
 			return canMove;
 		}
+			
 
-		/*
-		 * 
-		 *  responds to a collision when it's encountered, returns true if player should be allowed through
-		 *  later on, replace with 'virtual' so enemies don't eat coins ie
-		 */
+		/// <summary>
+		/// responds to a collision when it's encountered
+		/// </summary>
+		/// <returns><c>true</c>, If player should be allowed through, <c>false</c> otherwise.</returns>
+		/// <param name="other">Other.</param>
+		/// <param name="moveX">Move x.</param>
+		/// <param name="moveY">Move y.</param>
 		bool handleCollision (GameObject other, float moveX, float moveY)
 		{
 			if (other is Tile) {
@@ -47,18 +51,21 @@ namespace GXPEngine
 			return NOTLANDED;
 		}
 
-		/* 
-		 *    resolves a collision
-		 */
+
+		/// <summary>
+		/// Resolves the collision.
+		/// </summary>
+		/// <returns><c>true</c>, if collision was resolved, <c>false</c> otherwise.</returns>
+		/// <param name="collisionObject">Collision object.</param>
+		/// <param name="moveX">Move x.</param>
+		/// <param name="moveY">Move y.</param>
 		bool resolveCollision (Sprite collisionObject, float moveX, float moveY)
 		{
 			if (moveX > 0) {
 				x = collisionObject.x - width;
-				return LANDED;
 			}
 			if (moveX < 0) {
 				x = collisionObject.x + collisionObject.width;
-				return LANDED;
 			}
 			if ((moveY) > 0) {
 				y = collisionObject.y - height;
@@ -70,21 +77,8 @@ namespace GXPEngine
 			return NOTLANDED;
 		}
 
-	   /*
-	   	*	checks if a coin is picked up, returns true and destroys coin if picked up
-		*/
-		protected bool checkPickup ()
-		{
-			pickedUp = false;
-			foreach (GameObject other in GetCollisions()) {
-				if (other is Coin) {
-					Coin coin = other as Coin;
-					coin.destoryCoin ();
-					pickedUp = true;
-				}
-			}
-			return pickedUp;
-		}
+
+
 
 	}
 }

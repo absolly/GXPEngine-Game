@@ -12,6 +12,10 @@ namespace GXPEngine
 
 		}
 
+		/// <summary>
+		/// Reads the level from the file.
+		/// </summary>
+		/// <returns>The level array.</returns>
 		public string[] GetLevel ()
 		{
 

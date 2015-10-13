@@ -11,6 +11,9 @@ namespace GXPEngine
 			y = Utils.Random (0, game.height);
 		}
 
+		/// <summary>
+		/// Destroys the coin.
+		/// </summary>
 		public void destoryCoin(){
 			this.Destroy();
 		}

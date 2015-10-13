@@ -2,11 +2,15 @@
 
 namespace GXPEngine
 {
-	public class Audio : Sound
+	public class Audio : GameObject
 	{
-		public Audio () : base("Audio/tower.ogg", true, false)
+		private SoundChannel _bgAudio;
+		public Audio () : base()
 		{
-			
+			Sound bgSound = new Sound ("tower.mp3", true, false);
+			_bgAudio = bgSound.Play();
+			_bgAudio.Frequency = 44100f;
+
 		}
 	}
 }

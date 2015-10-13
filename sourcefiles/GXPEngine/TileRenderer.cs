@@ -18,6 +18,11 @@ namespace GXPEngine
 		{
 		}
 
+		/// <summary>
+		/// Takes the tile numbers from the array and renders the tiles.
+		/// </summary>
+		/// <returns>The tile list.</returns>
+		/// <param name="levelimporter">Levelimporter.</param>
 		public List<AnimationSprite> GetTiles (LevelImporter levelimporter)
 		{
 			

@@ -15,14 +15,12 @@ public class MyGame : Game
  
 	public MyGame () : base (1280, 720, false)
 	{
-
-		Level level = new Level ();
-		AddChild (level);
+		MainMenu menu = new MainMenu();
+		AddChild (menu);
 	}
 
 	void Update ()
 	{	
-
 	}
 
 	static void Main ()
