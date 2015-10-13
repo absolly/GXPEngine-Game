@@ -21,7 +21,7 @@ namespace GXPEngine
 
 			//Load the file
 			Console.WriteLine ("Loading Level File");
-			string csvPath = "Level1.txt";
+			string csvPath = "Level3.txt";
 			string csvContents = File.ReadAllText (csvPath);
 
 			//Split the file into lines

@@ -23,7 +23,7 @@ namespace GXPEngine
 		/// </summary>
 		/// <returns>The tile list.</returns>
 		/// <param name="levelimporter">Levelimporter.</param>
-		public List<AnimationSprite> GetTiles (LevelImporter levelimporter)
+		public List<AnimationSprite> GetTiles (LevelImporter levelimporter, Player player)
 		{
 			
 			tiles = new List<AnimationSprite> ();
@@ -43,12 +43,31 @@ namespace GXPEngine
 					Tile tile = new Tile ("colors.png", 2, 3);
 					if (i == 0) {
 						tile.visible = false;
+					
+					} 
+
+					if(i == 1){
+						Coin coin = new Coin ();
+						coin.x = x;
+						coin.y = y;
+						this.AddChild (coin);
+						tile.visible = false;
 					} else {
-						tile.SetFrame (i-1);
+						if (i == 5) {
+							player.x = x;
+							player.y = y-48;
+							//tile.visible = false;
+							tile.SetFrame (i - 1);
+							tile.y = y;
+							tile.x = x;
+						} else {
+							tile.SetFrame (i - 1);
+							tile.y = y;
+							tile.x = x;
+						}
 					}
 						
-					tile.y = y;
-					tile.x = x;
+
 
 					this.AddChild (tile);
 					tiles.Add (tile);

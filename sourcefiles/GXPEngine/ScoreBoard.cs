@@ -9,7 +9,7 @@ namespace GXPEngine
 		private Brush _brush;
 		private PointF _position;
 
-		public ScoreBoard () : base(400,60)
+		public ScoreBoard () : base(400,80)
 		{
 			_font = new Font ("Arial", 20, FontStyle.Regular);
 			_brush = new SolidBrush (Color.White);
@@ -23,7 +23,7 @@ namespace GXPEngine
 		/// <param name="score">Score.</param>
 		/// <param name="time">Time.</param>
 		public void drawScoreTime(int score, int time){
-			string message = "Score: " + score + "\nTime: " + time;
+			string message = "Score: " + score + "\nTime: " + time + "\nFPS: " + game.currentFps;
 			graphics.Clear (Color.Empty);
 			graphics.DrawString (message, _font, _brush, _position);
 

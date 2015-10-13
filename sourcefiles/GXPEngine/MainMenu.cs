@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 
-
 namespace GXPEngine
 {
 	public class MainMenu : GameObject
@@ -64,6 +63,15 @@ namespace GXPEngine
 				switch(_selected){
 				case 0:
 					Console.WriteLine ("play");
+
+					foreach(GameObject child in game.GetChildren()){
+						if (child is Level) {
+							child.visible = true;
+							this.visible = false;
+							return;
+						}
+					}
+
 					Level level = new Level ();
 					game.AddChild (level);
 					this.visible = false;
@@ -71,7 +79,7 @@ namespace GXPEngine
 					break;
 				case 1:
 					Console.WriteLine ("Quit");
-
+					Environment.Exit (0);
 					break;
 				}
 			}

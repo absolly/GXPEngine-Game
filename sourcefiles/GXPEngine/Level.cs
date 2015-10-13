@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
+
 
 namespace GXPEngine
 {
@@ -7,7 +9,6 @@ namespace GXPEngine
 	{
 
 		Player player;
-		Coin coin;
 		ScoreBoard scoreBoard;
 		private int _score;
 		private float _time = 60;
@@ -20,20 +21,13 @@ namespace GXPEngine
 			Canvas canvas = new Canvas (game.width, game.height);
 			canvas.graphics.FillRectangle (new SolidBrush (Color.FromArgb (125, 106, 148)), new Rectangle (0, 0, game.width, game.height));
 			AddChild (canvas);
-
 		
 			player = new Player ();
 			scoreBoard = new ScoreBoard ();
 			LevelImporter levelImporter = new LevelImporter ();
 			TileRenderer tileRenderer = new TileRenderer ();
-			tileRenderer.GetTiles (levelImporter);
+			tileRenderer.GetTiles (levelImporter, player);
 			this.AddChild (tileRenderer);
-			for (int i = 0; i < 100; i++) {
-				coin = new Coin ();
-				this.AddChild (coin);
-
-			}
-
 			Console.WriteLine ("Level Loaded");
 			Console.WriteLine ("\nLoading Player");
 
@@ -53,9 +47,15 @@ namespace GXPEngine
 			if (_time <= 0.0f){
 				
 			}
-
+			if (Input.GetKeyDown (Key.P)) {
+				this.visible = false;
+				foreach (GameObject child in parent.GetChildren()) {
+					if (child is MainMenu) {
+						child.visible = true;
+					}
+				}
+			}
 		}
-
 
 	}
 }

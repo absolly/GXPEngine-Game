@@ -1,28 +1,9 @@
 ﻿<Properties StartupItem="GXPEngine/GXPEngine.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GXPEngine/LevelImporter.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GXPEngine/Level.cs">
     <Files>
-      <File FileName="GXPEngine/Level.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/MyGame.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/MainMenu.cs" Line="60" Column="26" />
-      <File FileName="GXPEngine/Player.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/MoveableSprite.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/ScoreBoard.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/GXPEngine/Utils/Time.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/TileRenderer.cs" Line="9" Column="20" />
-      <File FileName="GXPEngine/LevelImporter.cs" Line="38" Column="5" />
+      <File FileName="GXPEngine/Level.cs" Line="58" Column="4" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="GXPEngine" expanded="True">
-            <Node name="GXPEngine" expanded="True">
-              <Node name="LevelImporter.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

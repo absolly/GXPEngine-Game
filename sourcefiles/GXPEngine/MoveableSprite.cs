@@ -4,9 +4,6 @@ namespace GXPEngine
 {
 	public class MoveableSprite : AnimationSprite
 	{
-		const bool NOTLANDED = true;
-		const bool LANDED = false;
-
 
 		public MoveableSprite (string filename, int cols, int rows) : base (filename, cols, rows)
 		{
@@ -23,15 +20,21 @@ namespace GXPEngine
 			x = x + moveX;
 			y = y + moveY;
 
-			bool canMove = NOTLANDED;
+			bool canMove = true;
 				
 			foreach (GameObject other in GetCollisions()) {
-				canMove = canMove && handleCollision (other, moveX, moveY);
+				canMove = canMove && isNear (other, moveX, moveY);
 			}
 
 			return canMove;
 		}
-			
+		bool isNear(GameObject other, float moveX, float moveY){
+			if(other.x > (x-16) && other.x < (x+16) && other.y > (y-16) && other.y < (y+32)){
+				return handleCollision (other, moveX, moveY);
+			}
+			return true;
+		}
+
 
 		/// <summary>
 		/// responds to a collision when it's encountered
@@ -44,11 +47,11 @@ namespace GXPEngine
 		{
 			if (other is Tile) {
 				Tile tile = other as Tile;
-				if (tile.visible != false) {
+				if (tile.currentFrame == 2) {
 					return resolveCollision (other as Sprite, moveX, moveY);
 				}
 			}
-			return NOTLANDED;
+			return true;
 		}
 
 
@@ -69,12 +72,14 @@ namespace GXPEngine
 			}
 			if ((moveY) > 0) {
 				y = collisionObject.y - height;
-				return LANDED;
+				return false;
 			}
 			if ((moveY) < 0) {
+				
 				y = collisionObject.y + collisionObject.height;
+
 			}
-			return NOTLANDED;
+			return true;
 		}
 
 
