@@ -28,8 +28,10 @@ namespace GXPEngine
 
 			return canMove;
 		}
-		bool isNear(GameObject other, float moveX, float moveY){
-			if(other.x > (x-16) && other.x < (x+16) && other.y > (y-16) && other.y < (y+32)){
+
+		bool isNear (GameObject other, float moveX, float moveY)
+		{
+			if (other.x > (x - 16) && other.x < (x + 16) && other.y > (y - 16) && other.y < (y + 32)) {
 				return handleCollision (other, moveX, moveY);
 			}
 			return true;
@@ -66,9 +68,11 @@ namespace GXPEngine
 		{
 			if (moveX > 0) {
 				x = collisionObject.x - width;
+				return false;
 			}
 			if (moveX < 0) {
 				x = collisionObject.x + collisionObject.width;
+				return false;
 			}
 			if ((moveY) > 0) {
 				y = collisionObject.y - height;

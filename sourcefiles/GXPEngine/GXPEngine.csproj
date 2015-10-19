@@ -70,10 +70,10 @@
     <Compile Include="Coin.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="MoveableSprite.cs" />
-    <Compile Include="ScoreBoard.cs" />
     <Compile Include="GameOverCheck.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="DrawString.cs" />
+    <Compile Include="HUD.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GXPEngine\" />

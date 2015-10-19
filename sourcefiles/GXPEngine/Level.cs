@@ -9,7 +9,7 @@ namespace GXPEngine
 	{
 
 		Player player;
-		ScoreBoard scoreBoard;
+		HUD scoreBoard;
 		private int _score;
 		private float _time = 60;
 
@@ -23,7 +23,7 @@ namespace GXPEngine
 			AddChild (canvas);
 		
 			player = new Player ();
-			scoreBoard = new ScoreBoard ();
+			scoreBoard = new HUD ();
 			LevelImporter levelImporter = new LevelImporter ();
 			TileRenderer tileRenderer = new TileRenderer ();
 			tileRenderer.GetTiles (levelImporter, player);
@@ -35,15 +35,14 @@ namespace GXPEngine
 			Console.WriteLine ("Player Loaded");
 
 			this.AddChild (scoreBoard);
-			Audio audio = new Audio ();
-			this.AddChild (audio);
+			new Audio ("Audio/tower.mp3",true,false);
 		}
 
 		void Update ()
 		{
 			_time -= Time.deltaTime;
 			_score = player.getScore ();
-			scoreBoard.drawScoreTime (_score, (int)Math.Ceiling(_time));
+			scoreBoard.drawHUD (_score, (int)Math.Ceiling(_time));
 			if (_time <= 0.0f){
 				
 			}

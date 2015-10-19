@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Text;
+
 
 namespace GXPEngine
 {
@@ -9,7 +11,7 @@ namespace GXPEngine
 		private SolidBrush _brush;
 		private int _selected = 0;
 
-		public MainMenu () : base()
+		public MainMenu () : base ()
 		{
 
 			game.Add (this);
@@ -17,13 +19,17 @@ namespace GXPEngine
 			canvas.graphics.FillRectangle (new SolidBrush (Color.FromArgb (125, 106, 148)), new Rectangle (0, 0, game.width, game.height));
 			AddChild (canvas);
 
-			_font = new Font ("Arial", 20, FontStyle.Regular);
+			PrivateFontCollection pfc = new PrivateFontCollection ();
+			pfc.AddFontFile ("Dolce Vita Light.ttf");
+			_font = new Font (pfc.Families [0], 20, FontStyle.Regular);
 			_brush = new SolidBrush (Color.White);
 
-
+		
 
 		}
-		void Update(){
+
+		void Update ()
+		{
 			if (!visible)
 				return;
 			getKey ();
@@ -32,25 +38,29 @@ namespace GXPEngine
 
 
 		}
-		public void getKey(){
-			if (Input.GetKey(Key.DOWN) && _selected != 1) {
+
+		public void getKey ()
+		{
+			if (Input.GetKey (Key.DOWN) && _selected != 1) {
 				_selected++;
 			}
-			if (Input.GetKey(Key.UP) && _selected != 0) {
+			if (Input.GetKey (Key.UP) && _selected != 0) {
 				_selected--;
 			}
 		}
-		public void drawString(){
-			if(_selected == 0){ 
-				DrawString drawString = new DrawString ("Play", game.width/2, 20, _font, new SolidBrush (Color.Red));
+
+		public void drawString ()
+		{
+			if (_selected == 0) { 
+				DrawString drawString = new DrawString ("Play", game.width / 2, 20, _font, new SolidBrush (Color.Red));
 				AddChild (drawString);
-				drawString = new DrawString ("Quit", game.width/2, 50, _font, _brush);
+				drawString = new DrawString ("Quit", game.width / 2, 50, _font, _brush);
 				AddChild (drawString);
 			}
-			if(_selected == 1){ 
-				DrawString drawString = new DrawString ("Play", game.width/2, 20, _font, _brush);
+			if (_selected == 1) { 
+				DrawString drawString = new DrawString ("Play", game.width / 2, 20, _font, _brush);
 				AddChild (drawString);
-				drawString = new DrawString ("Quit", game.width/2, 50, _font, new SolidBrush (Color.Red));
+				drawString = new DrawString ("Quit", game.width / 2, 50, _font, new SolidBrush (Color.Red));
 				AddChild (drawString);
 			}
 		}
@@ -58,13 +68,14 @@ namespace GXPEngine
 		/// <summary>
 		/// Selects the option.
 		/// </summary>
-		public void selectOption(){
-			if(Input.GetKeyDown(Key.ENTER)){
-				switch(_selected){
+		public void selectOption ()
+		{
+			if (Input.GetKeyDown (Key.ENTER)) {
+				switch (_selected) {
 				case 0:
 					Console.WriteLine ("play");
 
-					foreach(GameObject child in game.GetChildren()){
+					foreach (GameObject child in game.GetChildren()) {
 						if (child is Level) {
 							child.visible = true;
 							this.visible = false;

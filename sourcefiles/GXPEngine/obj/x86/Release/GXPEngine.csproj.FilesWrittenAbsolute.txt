@@ -1,0 +1,3 @@
+/Users/Tiemen/Dropbox/Saxion/Q1.1/Game Programming/GXPEngine 2/sourcefiles/GXPEngine/obj/x86/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
+/Users/Tiemen/Dropbox/Saxion/Q1.1/Game Programming/GXPEngine 2/sourcefiles/GXPEngine/bin/Release/GXPEngine.exe
+/Users/Tiemen/Dropbox/Saxion/Q1.1/Game Programming/GXPEngine 2/sourcefiles/GXPEngine/obj/x86/Release/GXPEngine.exe

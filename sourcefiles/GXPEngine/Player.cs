@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace GXPEngine
 {
@@ -13,7 +14,9 @@ namespace GXPEngine
 		bool firstFrame = true;
 		private bool _ducking;
 		const int originalHeight = 32;
-
+		private float _groundHitSpeed;
+		private bool _isDead;
+		private PointF _spawnPos;
 	
 
 		private enum _playerState
@@ -21,15 +24,17 @@ namespace GXPEngine
 			Idle,
 			Running,
 			Duck,
-			Dying,
+			Sliding,
 			Falling,
+			Dying,
 
 		}
 		_playerState playerstate;
 
 		//http://opengameart.org/content/mv-platformer-male-32x64
-		public Player () : base ("ninja_full.png", 10, 2)
-		{
+		public Player () : base ("ninja_full.png", 10, 3)
+		{	
+			_spawnPos = new PointF (x, y);
 			_velocityY = 2.0f;
 			_moveSpeed = 4;
 			_frame = 0.0f;
@@ -42,16 +47,19 @@ namespace GXPEngine
 			
 			checkPickup ();
 			_velocityY += 1.0f;
-			if (_velocityY > 16)
-				_velocityY = 16;
+			if (_velocityY > 16.0f)
+				_velocityY = 16.0f;
 
 			_grounded = false;
 			_frame = _frame + 0.5f;
 
 
+			if (!_isDead) {
 			playerstate = _playerState.Falling;
+
 			if (move (0, _velocityY) == false) {
 				_grounded = true;
+				_groundHitSpeed = _velocityY;
 				_velocityY = 0.0f;
 				playerstate = _playerState.Idle;
 			}
@@ -64,20 +72,31 @@ namespace GXPEngine
 
 			}
 			if (Input.GetKey (Key.LEFT) && !_ducking) {
-				move (-_moveSpeed, 0);
-				playerstate = _playerState.Running;
-				scaleX = -1;
-				SetOrigin (width, 0);
+				if (move (-_moveSpeed, 0) == true) {
+					if (_grounded) {
+						playerstate = _playerState.Running;
+					}
+					scaleX = -1;
+					SetOrigin (width, 0);
+				} else if(!_grounded && _velocityY > 1.0f){
+					playerstate = _playerState.Sliding;
+				}
+			}
+
+
+			if (Input.GetKey (Key.RIGHT) && !_ducking) {
+				if (move (_moveSpeed, 0) == true) {
+					if (_grounded) {
+     						playerstate = _playerState.Running;
+					}					scaleX = 1;
+					SetOrigin (0, 0);
+				} else if(!_grounded && _velocityY > 2.0f){
+					playerstate = _playerState.Sliding;
+				}
+
 			}
 			if ((Input.GetKeyDown (Key.UP) || Input.GetKeyDown (Key.Z) || Input.GetKeyDown (Key.SPACE)) && _grounded && !_ducking) {
 				_velocityY -= 9.0f;
-	
-			}
-			if (Input.GetKey (Key.RIGHT) && !_ducking) {
-				move (_moveSpeed, 0);
-				playerstate = _playerState.Running;
-				scaleX = 1;
-				SetOrigin (0, 0);
 
 			}
 
@@ -85,22 +104,27 @@ namespace GXPEngine
 				setScore (1);
 			}
 
-			switch (playerstate) {
-			case _playerState.Idle:
-				Idle ();
-				break;
-			case _playerState.Running:
-				Running ();
-				break;
-			case _playerState.Duck:
-				Duck ();
-				break;
-			case _playerState.Falling:
-				Falling ();
-				break;
+
+				switch (playerstate) {
+				case _playerState.Idle:
+					Idle ();
+					break;
+				case _playerState.Running:
+					Running ();
+					break;
+				case _playerState.Duck:
+					Duck ();
+					break;
+				case _playerState.Falling:
+					Falling ();
+					break;
+				case _playerState.Sliding:
+					Sliding ();
+					break;
 				
-			}
-			Falling ();
+				}
+			} 
+			checkFallDamage ();
 		}
 
 		void Idle ()
@@ -147,7 +171,32 @@ namespace GXPEngine
 				i = 0;
 			}
 		}
+		void Sliding (){
+			_velocityY -= 0.8f;
+			currentFrame = 20;
+		}
 
+		void checkFallDamage(){
+			if ((_grounded && _groundHitSpeed >= 16.0f) || _isDead) {
+				_isDead = true;
+
+
+				Console.WriteLine ("dead");
+				if (firstFrame) {
+					//http://opengameart.org/content/wall-impact
+					new Audio ("Audio/Hitting Wall.wav",false,false);
+					currentFrame = 21;
+					firstFrame = false;
+				}else{
+					
+					_frame = 0.0f;
+					NextFrame ();
+					if (currentFrame > 25) {
+						currentFrame = 25;
+					}
+				}
+			}
+		}
 
 		/// <summary>
 		/// Sets the score to current score + amount.
@@ -180,7 +229,7 @@ namespace GXPEngine
 		{
 			bool pickedUp = false;
 			foreach (GameObject other in GetCollisions()) {
-				if (other is Coin) {
+				if (other is Coin && other.x > (x-16) && other.x < (x+16) && other.y > (y-16) && other.y < (y+32)) {
 					Coin coin = other as Coin;
 					coin.destoryCoin ();
 					pickedUp = true;
