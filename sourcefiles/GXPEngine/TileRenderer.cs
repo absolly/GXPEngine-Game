@@ -55,8 +55,7 @@ namespace GXPEngine
 					} else {
 						if (i == 5) {
 							player.x = x;
-							player.y = y-48;
-							//tile.visible = false;
+							player.y = y-8;
 							tile.SetFrame (i - 1);
 							tile.y = y;
 							tile.x = x;
@@ -64,6 +63,7 @@ namespace GXPEngine
 							tile.SetFrame (i - 1);
 							tile.y = y;
 							tile.x = x;
+							tile.SetColor(1,1,1);
 						}
 					}
 						

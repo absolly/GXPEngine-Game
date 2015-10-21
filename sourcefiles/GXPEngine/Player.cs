@@ -10,31 +10,30 @@ namespace GXPEngine
 		private int _moveSpeed;
 		private bool _grounded;
 		private int _score = 0;
-		int i = 0;
-		bool firstFrame = true;
-		private bool _ducking;
-		const int originalHeight = 32;
+		private int _airFrame = 0;
+		private bool _firstFrame = true;
 		private float _groundHitSpeed;
 		private bool _isDead;
-		private PointF _spawnPos;
-	
+		private int wallJumpFrame = 5;
+		private float wallJumpDirection;
+		private float previousWallJumpDirection;
+		private float _gravityTick;
 
 		private enum _playerState
 		{
 			Idle,
 			Running,
-			Duck,
 			Sliding,
-			Falling,
+			InAir,
 			Dying,
 
 		}
+
 		_playerState playerstate;
 
 		//http://opengameart.org/content/mv-platformer-male-32x64
 		public Player () : base ("ninja_full.png", 10, 3)
 		{	
-			_spawnPos = new PointF (x, y);
 			_velocityY = 2.0f;
 			_moveSpeed = 4;
 			_frame = 0.0f;
@@ -45,64 +44,19 @@ namespace GXPEngine
 		void Update ()
 		{
 			
-			checkPickup ();
-			_velocityY += 1.0f;
-			if (_velocityY > 16.0f)
-				_velocityY = 16.0f;
 
 			_grounded = false;
-			_frame = _frame + 0.5f;
+			_frame += 0.5f;
+			_gravityTick += 1;
 
 
 			if (!_isDead) {
-			playerstate = _playerState.Falling;
+				checkPickup ();
 
-			if (move (0, _velocityY) == false) {
-				_grounded = true;
-				_groundHitSpeed = _velocityY;
-				_velocityY = 0.0f;
-				playerstate = _playerState.Idle;
-			}
-			if (Input.GetKey (Key.DOWN)) {
-				playerstate = _playerState.Duck;
-				_ducking = true;
-			} else {
-				_ducking = false;
-				firstFrame = true;
+				playerstate = _playerState.InAir;
 
-			}
-			if (Input.GetKey (Key.LEFT) && !_ducking) {
-				if (move (-_moveSpeed, 0) == true) {
-					if (_grounded) {
-						playerstate = _playerState.Running;
-					}
-					scaleX = -1;
-					SetOrigin (width, 0);
-				} else if(!_grounded && _velocityY > 1.0f){
-					playerstate = _playerState.Sliding;
-				}
-			}
-
-
-			if (Input.GetKey (Key.RIGHT) && !_ducking) {
-				if (move (_moveSpeed, 0) == true) {
-					if (_grounded) {
-     						playerstate = _playerState.Running;
-					}					scaleX = 1;
-					SetOrigin (0, 0);
-				} else if(!_grounded && _velocityY > 2.0f){
-					playerstate = _playerState.Sliding;
-				}
-
-			}
-			if ((Input.GetKeyDown (Key.UP) || Input.GetKeyDown (Key.Z) || Input.GetKeyDown (Key.SPACE)) && _grounded && !_ducking) {
-				_velocityY -= 9.0f;
-
-			}
-
-			if (checkPickup ()) {
-				setScore (1);
-			}
+				applyGravity ();
+				applyPlayerMovement ();
 
 
 				switch (playerstate) {
@@ -112,22 +66,21 @@ namespace GXPEngine
 				case _playerState.Running:
 					Running ();
 					break;
-				case _playerState.Duck:
-					Duck ();
-					break;
-				case _playerState.Falling:
-					Falling ();
+				case _playerState.InAir:
+					InAir ();
 					break;
 				case _playerState.Sliding:
 					Sliding ();
 					break;
 				
 				}
+				wallJump ();
+
 			} 
 			checkFallDamage ();
 		}
 
-		void Idle ()
+		private void Idle ()
 		{
 			currentFrame = 0;
 		}
@@ -143,56 +96,71 @@ namespace GXPEngine
 			}
 		}
 
-		void Duck ()
-		{
-			if (firstFrame) {
-				currentFrame = 7;
-				firstFrame = false;
-			}else if (_frame > 1) {
-				_frame = 0.0f;
-				NextFrame ();
-				if (currentFrame > 9) {
-					currentFrame = 9;
-				}
-			}
-		}
 
-		void Falling ()
+		private void InAir ()
 		{
 			if (_velocityY < 0) {
 				currentFrame = 17;
-				if (i >= 2){
+				if (_airFrame >= 2) {
 					currentFrame = 18;
 				}
-				i++;
+				_airFrame++;
 			}
 			if (_velocityY > 1.0f && !_grounded) {
 				currentFrame = 19;
-				i = 0;
+				_airFrame = 0;
 			}
 		}
-		void Sliding (){
-			_velocityY -= 0.8f;
+
+		private void Sliding ()
+		{
+			_velocityY -= 3.0f;
+			if (_velocityY < 4.0f) {
+				_velocityY = 4.0f;
+
+			}
 			currentFrame = 20;
+			if (Input.GetKey (Key.SPACE) || Input.GetKeyDown (Key.UP)) {
+				wallJumpFrame = 1;
+				wallJumpDirection = -scaleX;
+
+			}
 		}
 
-		void checkFallDamage(){
-			if ((_grounded && _groundHitSpeed >= 16.0f) || _isDead) {
+		private void wallJump ()
+		{
+			if (wallJumpFrame < 8 && wallJumpDirection != previousWallJumpDirection) {
+				_velocityY -= 7.0f / wallJumpFrame;
+				if (_velocityY < -11.0f) {
+					_velocityY = -11.0f;
+				}
+				wallJumpFrame++;
+			} else {
+				previousWallJumpDirection = wallJumpDirection;
+				wallJumpFrame = 6;
+			}
+		}
+
+		private void checkFallDamage ()
+		{
+			if ((_grounded && _groundHitSpeed >= 15.5f) || _isDead) {
 				_isDead = true;
 
 
 				Console.WriteLine ("dead");
-				if (firstFrame) {
+				if (_firstFrame) {
 					//http://opengameart.org/content/wall-impact
-					new Audio ("Audio/Hitting Wall.wav",false,false);
-					currentFrame = 21;
-					firstFrame = false;
-				}else{
+					new Audio ("Audio/Hitting Wall.wav", false, false);
+					currentFrame = 22;
+					_firstFrame = false;
+				} else {
 					
 					_frame = 0.0f;
 					NextFrame ();
 					if (currentFrame > 25) {
 						currentFrame = 25;
+						Level level = parent as Level;
+						level.ResetLevel ();
 					}
 				}
 			}
@@ -202,7 +170,7 @@ namespace GXPEngine
 		/// Sets the score to current score + amount.
 		/// </summary>
 		/// <param name="setScore">Amount to add to score.</param>
-		void setScore (int setScore)
+		public void setScore (int setScore)
 		{
 			_score += setScore;
 		}
@@ -216,7 +184,7 @@ namespace GXPEngine
 			return _score;
 		}
 
-		public void setVelocityY (float velocityY)
+		private void setVelocityY (float velocityY)
 		{
 			_velocityY = velocityY;
 		}
@@ -225,17 +193,70 @@ namespace GXPEngine
 		/// Checks if a coin was picked up.
 		/// </summary>
 		/// <returns><c>true</c>, if pickup was detected, <c>false</c> otherwise.</returns>
-		private bool checkPickup ()
+		private void checkPickup ()
 		{
-			bool pickedUp = false;
 			foreach (GameObject other in GetCollisions()) {
-				if (other is Coin && other.x > (x-16) && other.x < (x+16) && other.y > (y-16) && other.y < (y+32)) {
+				if (other is Coin && other.x > (x - 16) && other.x < (x + 16) && other.y > (y - 16) && other.y < (y + 32)) {
 					Coin coin = other as Coin;
 					coin.destoryCoin ();
-					pickedUp = true;
+					setScore (1);
 				}
 			}
-			return pickedUp;
 		}
+
+		private void applyGravity ()
+		{
+
+			_velocityY += 1.0f;
+			
+			if (_velocityY > 16.0f)
+				_velocityY = 16.0f;
+			
+			if (move (0, _velocityY) == false) {
+				_grounded = true;
+				wallJumpDirection = 0.0f;
+				_groundHitSpeed = _velocityY;
+				_velocityY = 0.0f;
+				playerstate = _playerState.Idle;
+			}
+			_gravityTick = 0;
+
+
+		}
+
+		private void applyPlayerMovement ()
+		{
+			if (Input.GetKey (Key.LEFT)) {
+				if (!Input.GetKey (Key.RIGHT) && move (-_moveSpeed, 0) == true) {
+					if (_grounded) {
+						playerstate = _playerState.Running;
+					}
+					scaleX = -1;
+					SetOrigin (width - 1, 0);
+				} else if (!_grounded && (_velocityY > 2.0f || Input.GetKeyDown (Key.SPACE) || Input.GetKeyDown (Key.UP))) {
+					playerstate = _playerState.Sliding;
+				}
+			}
+
+
+			if (Input.GetKey (Key.RIGHT)) {
+				if (!Input.GetKey (Key.LEFT) && move (_moveSpeed, 0) == true) {
+					if (_grounded) {
+						playerstate = _playerState.Running;
+					}
+					scaleX = 1;
+					SetOrigin (0, 0);
+				} else if (!_grounded && (_velocityY > 2.0f || Input.GetKeyDown (Key.SPACE) || Input.GetKeyDown (Key.UP))) {
+					playerstate = _playerState.Sliding;
+				}
+
+			}
+
+			if ((Input.GetKeyDown (Key.UP) || Input.GetKeyDown (Key.Z) || Input.GetKeyDown (Key.SPACE)) && _grounded) {
+				_velocityY -= 11.0f;
+
+			}
+		}
+
 	}
 }

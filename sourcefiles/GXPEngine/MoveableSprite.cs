@@ -23,19 +23,13 @@ namespace GXPEngine
 			bool canMove = true;
 				
 			foreach (GameObject other in GetCollisions()) {
-				canMove = canMove && isNear (other, moveX, moveY);
+				canMove = canMove && handleCollision (other, moveX, moveY);
 			}
 
 			return canMove;
 		}
 
-		bool isNear (GameObject other, float moveX, float moveY)
-		{
-			if (other.x > (x - 16) && other.x < (x + 16) && other.y > (y - 16) && other.y < (y + 32)) {
-				return handleCollision (other, moveX, moveY);
-			}
-			return true;
-		}
+
 
 
 		/// <summary>
@@ -66,6 +60,7 @@ namespace GXPEngine
 		/// <param name="moveY">Move y.</param>
 		bool resolveCollision (Sprite collisionObject, float moveX, float moveY)
 		{
+			
 			if (moveX > 0) {
 				x = collisionObject.x - width;
 				return false;
@@ -78,6 +73,7 @@ namespace GXPEngine
 				y = collisionObject.y - height;
 				return false;
 			}
+
 			if ((moveY) < 0) {
 				
 				y = collisionObject.y + collisionObject.height;

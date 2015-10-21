@@ -10,6 +10,8 @@ namespace GXPEngine
 
 		Player player;
 		HUD scoreBoard;
+		TileRenderer tileRenderer;
+		LevelImporter levelImporter;
 		private int _score;
 		private float _time = 60;
 
@@ -24,8 +26,8 @@ namespace GXPEngine
 		
 			player = new Player ();
 			scoreBoard = new HUD ();
-			LevelImporter levelImporter = new LevelImporter ();
-			TileRenderer tileRenderer = new TileRenderer ();
+			levelImporter = new LevelImporter ();
+			tileRenderer = new TileRenderer ();
 			tileRenderer.GetTiles (levelImporter, player);
 			this.AddChild (tileRenderer);
 			Console.WriteLine ("Level Loaded");
@@ -35,7 +37,7 @@ namespace GXPEngine
 			Console.WriteLine ("Player Loaded");
 
 			this.AddChild (scoreBoard);
-			new Audio ("Audio/tower.mp3",true,false);
+			//new Audio ("Audio/tower.mp3",true,false);
 		}
 
 		void Update ()
@@ -54,6 +56,13 @@ namespace GXPEngine
 					}
 				}
 			}
+				
+		}
+		public void ResetLevel(){
+			Level level = new Level ();
+			game.AddChild (level);
+			Console.WriteLine ("reset");
+			this.Destroy ();
 		}
 
 	}

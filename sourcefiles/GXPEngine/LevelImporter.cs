@@ -7,16 +7,9 @@ namespace GXPEngine
 {
 	public class LevelImporter
 	{
+		private string[] _linesArray;
+
 		public LevelImporter ()
-		{
-
-		}
-
-		/// <summary>
-		/// Reads the level from the file.
-		/// </summary>
-		/// <returns>The level array.</returns>
-		public string[] GetLevel ()
 		{
 
 			//Load the file
@@ -27,17 +20,28 @@ namespace GXPEngine
 			//Split the file into lines
 			try { /* UNIX line endings */
 				string[] dataArray = csvContents.Split (new[]{ "data=\n" }, StringSplitOptions.None);
-				string[] linesArray = dataArray [1].Split (new[]{ ",\n" }, StringSplitOptions.None);
-				Console.WriteLine("Mac/Linux Line Endings Detected");
-				return linesArray;
+				_linesArray = dataArray [1].Split (new[]{ ",\n" }, StringSplitOptions.None);
+				Console.WriteLine ("Mac/Linux Line Endings Detected");
 			} catch { /* Windows line endings */
 				string[] dataArray = csvContents.Split (new[]{ "data=\r\n" }, StringSplitOptions.None);
-				string[] linesArray = dataArray [1].Split (new[]{ ",\r\n" }, StringSplitOptions.None);
-				Console.WriteLine("Windows Line Endings Detected");
-				return linesArray;
+				_linesArray = dataArray [1].Split (new[]{ ",\r\n" }, StringSplitOptions.None);
+				Console.WriteLine ("Windows Line Endings Detected");
+
 			}
-				
-		 	 
+		}
+
+		/// <summary>
+		/// Returns a string array containing the lines of the leveldata.
+		/// </summary>
+		/// <returns>The level array.</returns>
+		public string[] GetLevel ()
+		{
+			return _linesArray;
+		}
+
+		public string[] GetLevels ()
+		{
+			return Directory.GetFiles (Directory.GetCurrentDirectory (), "Level*.txt");
 		}
 
 	}

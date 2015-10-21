@@ -2,23 +2,13 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="GXPEngine/Player.cs">
     <Files>
-      <File FileName="GXPEngine/Level.cs" Line="15" Column="1" />
-      <File FileName="GXPEngine/HUD.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/Player.cs" Line="186" Column="50" />
-      <File FileName="GXPEngine/Audio.cs" Line="11" Column="15" />
-      <File FileName="GXPEngine/DrawString.cs" Line="1" Column="1" />
+      <File FileName="GXPEngine/Level.cs" Line="65" Column="20" />
+      <File FileName="GXPEngine/Player.cs" Line="226" Column="18" />
+      <File FileName="GXPEngine/MoveableSprite.cs" Line="47" Column="1" />
+      <File FileName="GXPEngine/GXPEngine/GameObject.cs" Line="122" Column="1" />
+      <File FileName="GXPEngine/GXPEngine/Game.cs" Line="177" Column="1" />
+      <File FileName="GXPEngine/GXPEngine/Core/BoxCollider.cs" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="GXPEngine" expanded="True">
-            <Node name="GXPEngine" expanded="True">
-              <Node name="Player.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
