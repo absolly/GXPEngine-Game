@@ -5,13 +5,13 @@ using System.Linq;
 
 namespace GXPEngine
 {
-	public class LevelImporter
+	public class LevelImporter : GameObject
 	{
 		private string[] _linesArray;
 
-		public LevelImporter ()
+		public LevelImporter () : base()
 		{
-
+			game.Add (this);
 			//Load the file
 			Console.WriteLine ("Loading Level File");
 			string csvPath = "Level3.txt";

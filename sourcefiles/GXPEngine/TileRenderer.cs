@@ -46,7 +46,7 @@ namespace GXPEngine
 					
 					} 
 
-					if(i == 1){
+					if (i == 1) {
 						Coin coin = new Coin ();
 						coin.x = x;
 						coin.y = y;
@@ -54,16 +54,18 @@ namespace GXPEngine
 						tile.visible = false;
 					} else {
 						if (i == 5) {
+							//Spawn player here
 							player.x = x;
-							player.y = y-8;
+							player.y = y - 8;
 							tile.SetFrame (i - 1);
 							tile.y = y;
 							tile.x = x;
 						} else {
+							//render the tile with the coronsponding id
 							tile.SetFrame (i - 1);
 							tile.y = y;
 							tile.x = x;
-							tile.SetColor(1,1,1);
+							tile.SetColor (1, 1, 1);
 						}
 					}
 						

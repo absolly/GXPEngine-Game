@@ -8,8 +8,17 @@ namespace GXPEngine
 	public class MainMenu : GameObject
 	{
 		private Font _font;
-		private SolidBrush _brush;
-		private int _selected = 0;
+		private SolidBrush _defaultColor;
+		private DrawString _menuStrings;
+		private DrawString _quitString;
+
+		private enum menuState
+		{
+			Main,
+			LevelSelect,
+		}
+
+		menuState _menuState;
 
 		public MainMenu () : base ()
 		{
@@ -20,81 +29,109 @@ namespace GXPEngine
 			AddChild (canvas);
 
 			PrivateFontCollection pfc = new PrivateFontCollection ();
-			pfc.AddFontFile ("Dolce Vita Light.ttf");
-			_font = new Font (pfc.Families [0], 20, FontStyle.Regular);
-			_brush = new SolidBrush (Color.White);
-
+			pfc.AddFontFile ("Dolce Vita.ttf");
+			_font = new Font (pfc.Families [0], 25, FontStyle.Regular);
+			_defaultColor = new SolidBrush (Color.White);
 		
 
 		}
 
 		void Update ()
 		{
+			//Disables the menu while invisible to improve preformance
 			if (!visible)
 				return;
-			getKey ();
-			drawString ();
-			selectOption ();
+
+			switch (_menuState) {
+			case menuState.Main:
+				mainMenu ();
+				break;
+			case menuState.LevelSelect:
+				levelSelect ();
+				break;
+			default:
+				mainMenu ();
+				break;
+			
+			}
+
+
 
 
 		}
 
-		public void getKey ()
+		private void mainMenu ()
 		{
-			if (Input.GetKey (Key.DOWN) && _selected != 1) {
-				_selected++;
+			_menuStrings = new DrawString ("Play", game.width / 2, 20, _font, _defaultColor);
+
+			if (checkMouseOver (_menuStrings.x, _menuStrings.y, _menuStrings.width, _menuStrings.height)) {
+				
+				_menuStrings.SetColor (255, 0, 0);
+				if (Input.GetMouseButtonDown (0)) {
+					play ();
+				}
+			} else {
+				_menuStrings.SetColor (255, 255, 255);
 			}
-			if (Input.GetKey (Key.UP) && _selected != 0) {
-				_selected--;
+			AddChild (_menuStrings);
+
+			_menuStrings = new DrawString ("Quit", game.width / 2, 50, _font, _defaultColor);
+
+			if (checkMouseOver (_menuStrings.x, _menuStrings.y, _menuStrings.width, _menuStrings.height)) {
+
+				_menuStrings.SetColor (255, 0, 0);
+				if (Input.GetMouseButtonDown (0)) {
+					quit ();
+				}
+			} else {
+				_menuStrings.SetColor (255, 255, 255);
 			}
+			AddChild (_menuStrings);
+
 		}
 
-		public void drawString ()
+		private void play ()
 		{
-			if (_selected == 0) { 
-				DrawString drawString = new DrawString ("Play", game.width / 2, 20, _font, new SolidBrush (Color.Red));
-				AddChild (drawString);
-				drawString = new DrawString ("Quit", game.width / 2, 50, _font, _brush);
-				AddChild (drawString);
-			}
-			if (_selected == 1) { 
-				DrawString drawString = new DrawString ("Play", game.width / 2, 20, _font, _brush);
-				AddChild (drawString);
-				drawString = new DrawString ("Quit", game.width / 2, 50, _font, new SolidBrush (Color.Red));
-				AddChild (drawString);
-			}
-		}
-
-		/// <summary>
-		/// Selects the option.
-		/// </summary>
-		public void selectOption ()
-		{
-			if (Input.GetKeyDown (Key.ENTER)) {
-				switch (_selected) {
-				case 0:
-					Console.WriteLine ("play");
-
-					foreach (GameObject child in game.GetChildren()) {
-						if (child is Level) {
-							child.visible = true;
-							this.visible = false;
-							return;
-						}
-					}
-
-					Level level = new Level ();
-					game.AddChild (level);
+			Console.WriteLine ("play");
+			
+			foreach (GameObject child in game.GetChildren()) {
+				if (child is Level) {
+					child.visible = true;
 					this.visible = false;
-
-					break;
-				case 1:
-					Console.WriteLine ("Quit");
-					Environment.Exit (0);
-					break;
+					return;
 				}
 			}
+			_menuState = menuState.LevelSelect;
+//			Level level = new Level ();
+//			game.AddChild (level);
+//			this.visible = false;
 		}
+
+		private void quit ()
+		{
+			Console.WriteLine ("Quit");
+			Environment.Exit (0);
+		}
+
+		private void levelSelectMenu ()
+		{
+		}
+
+
+
+		private void levelSelect ()
+		{
+			
+		}
+
+		private bool checkMouseOver (float buttonX, float buttonY, float buttonWidth, float buttonHeight)
+		{
+			if ((Input.mouseX <= buttonX + (buttonWidth / 2) && Input.mouseX >= buttonX - (buttonWidth / 2)) && (Input.mouseY <= buttonY + (buttonHeight / 2) && Input.mouseY >= buttonY - (buttonHeight / 2))) {
+				return true;
+			}
+			return false;
+		}
+
 	}
 }
 

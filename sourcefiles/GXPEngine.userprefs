@@ -1,15 +1,6 @@
 ﻿<Properties StartupItem="GXPEngine/GXPEngine.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GXPEngine/Player.cs">
-    <Files>
-      <File FileName="GXPEngine/Level.cs" Line="65" Column="20" />
-      <File FileName="GXPEngine/Player.cs" Line="226" Column="18" />
-      <File FileName="GXPEngine/MoveableSprite.cs" Line="47" Column="1" />
-      <File FileName="GXPEngine/GXPEngine/GameObject.cs" Line="122" Column="1" />
-      <File FileName="GXPEngine/GXPEngine/Game.cs" Line="177" Column="1" />
-      <File FileName="GXPEngine/GXPEngine/Core/BoxCollider.cs" Line="1" Column="1" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

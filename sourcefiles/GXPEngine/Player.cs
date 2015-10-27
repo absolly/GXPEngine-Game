@@ -19,7 +19,7 @@ namespace GXPEngine
 		private float previousWallJumpDirection;
 		private float _gravityTick;
 
-		private enum _playerState
+		private enum playerState
 		{
 			Idle,
 			Running,
@@ -29,7 +29,7 @@ namespace GXPEngine
 
 		}
 
-		_playerState playerstate;
+		playerState _playerState;
 
 		//http://opengameart.org/content/mv-platformer-male-32x64
 		public Player () : base ("ninja_full.png", 10, 3)
@@ -53,23 +53,23 @@ namespace GXPEngine
 			if (!_isDead) {
 				checkPickup ();
 
-				playerstate = _playerState.InAir;
+				_playerState = playerState.InAir;
 
 				applyGravity ();
 				applyPlayerMovement ();
 
 
-				switch (playerstate) {
-				case _playerState.Idle:
+				switch (_playerState) {
+				case playerState.Idle:
 					Idle ();
 					break;
-				case _playerState.Running:
+				case playerState.Running:
 					Running ();
 					break;
-				case _playerState.InAir:
+				case playerState.InAir:
 					InAir ();
 					break;
-				case _playerState.Sliding:
+				case playerState.Sliding:
 					Sliding ();
 					break;
 				
@@ -114,9 +114,9 @@ namespace GXPEngine
 
 		private void Sliding ()
 		{
-			_velocityY -= 3.0f;
-			if (_velocityY < 4.0f) {
-				_velocityY = 4.0f;
+			_velocityY -= 2.0f;
+			if (_velocityY < 3.0f) {
+				_velocityY = 3.0f;
 
 			}
 			currentFrame = 20;
@@ -217,7 +217,7 @@ namespace GXPEngine
 				wallJumpDirection = 0.0f;
 				_groundHitSpeed = _velocityY;
 				_velocityY = 0.0f;
-				playerstate = _playerState.Idle;
+				_playerState = playerState.Idle;
 			}
 			_gravityTick = 0;
 
@@ -229,12 +229,12 @@ namespace GXPEngine
 			if (Input.GetKey (Key.LEFT)) {
 				if (!Input.GetKey (Key.RIGHT) && move (-_moveSpeed, 0) == true) {
 					if (_grounded) {
-						playerstate = _playerState.Running;
+						_playerState = playerState.Running;
 					}
 					scaleX = -1;
 					SetOrigin (width - 1, 0);
 				} else if (!_grounded && (_velocityY > 2.0f || Input.GetKeyDown (Key.SPACE) || Input.GetKeyDown (Key.UP))) {
-					playerstate = _playerState.Sliding;
+					_playerState = playerState.Sliding;
 				}
 			}
 
@@ -242,12 +242,12 @@ namespace GXPEngine
 			if (Input.GetKey (Key.RIGHT)) {
 				if (!Input.GetKey (Key.LEFT) && move (_moveSpeed, 0) == true) {
 					if (_grounded) {
-						playerstate = _playerState.Running;
+						_playerState = playerState.Running;
 					}
 					scaleX = 1;
 					SetOrigin (0, 0);
 				} else if (!_grounded && (_velocityY > 2.0f || Input.GetKeyDown (Key.SPACE) || Input.GetKeyDown (Key.UP))) {
-					playerstate = _playerState.Sliding;
+					_playerState = playerState.Sliding;
 				}
 
 			}

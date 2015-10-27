@@ -15,15 +15,16 @@ namespace GXPEngine
 		public HUD () : base(400,80)
 		{
 			PrivateFontCollection pfc = new PrivateFontCollection();
-			pfc.AddFontFile("Dolce Vita Light.ttf");
+			pfc.AddFontFile("Dolce Vita.ttf");
 			_font = new Font (pfc.Families[0], 20, FontStyle.Regular);
+
 			_brush = new SolidBrush (Color.White);
 			_position = new PointF (0, 0);
 			graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 		}
 
 		/// <summary>
-		/// Draws the current score & time.
+		/// Draws the current score, time and fps.
 		/// </summary>
 		/// <param name="score">Score.</param>
 		/// <param name="time">Time.</param>
