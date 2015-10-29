@@ -9,12 +9,12 @@ namespace GXPEngine
 	{
 		private string[] _linesArray;
 
-		public LevelImporter () : base()
+		public LevelImporter (string level = "Level1") : base ()
 		{
 			game.Add (this);
 			//Load the file
 			Console.WriteLine ("Loading Level File");
-			string csvPath = "Level3.txt";
+			string csvPath = level + ".txt";
 			string csvContents = File.ReadAllText (csvPath);
 
 			//Split the file into lines
@@ -41,7 +41,12 @@ namespace GXPEngine
 
 		public string[] GetLevels ()
 		{
-			return Directory.GetFiles (Directory.GetCurrentDirectory (), "Level*.txt");
+
+			string[] fileNames = Directory.GetFiles (Directory.GetCurrentDirectory (), "Level*.txt");
+			for (int i = 0; i < fileNames.Length; i++) {
+				fileNames [i] = Path.GetFileName (fileNames [i]).Replace (".txt", "");
+			}
+			return fileNames;
 		}
 
 	}

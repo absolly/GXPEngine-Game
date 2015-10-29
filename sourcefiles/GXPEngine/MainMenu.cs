@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Collections.Generic;
+
 
 
 namespace GXPEngine
@@ -9,8 +11,12 @@ namespace GXPEngine
 	{
 		private Font _font;
 		private SolidBrush _defaultColor;
-		private DrawString _menuStrings;
-		private DrawString _quitString;
+		private DrawString _playButton;
+		private DrawString _quitButton;
+		private List<DrawString> _levelButtons;
+		private DrawString[] _levelButtonsArray;
+		private LevelImporter _levelImporter;
+
 
 		private enum menuState
 		{
@@ -22,7 +28,7 @@ namespace GXPEngine
 
 		public MainMenu () : base ()
 		{
-
+			
 			game.Add (this);
 			Canvas canvas = new Canvas (game.width, game.height);
 			canvas.graphics.FillRectangle (new SolidBrush (Color.FromArgb (125, 106, 148)), new Rectangle (0, 0, game.width, game.height));
@@ -32,8 +38,14 @@ namespace GXPEngine
 			pfc.AddFontFile ("Dolce Vita.ttf");
 			_font = new Font (pfc.Families [0], 25, FontStyle.Regular);
 			_defaultColor = new SolidBrush (Color.White);
-		
 
+			_playButton = new DrawString ("Play", game.width / 2, 20, _font, _defaultColor);
+			AddChild (_playButton);
+
+			_quitButton = new DrawString ("Quit", game.width / 2, 50, _font, _defaultColor);
+			AddChild (_quitButton);
+			_levelImporter = new LevelImporter ();
+			_levelButtons = new List<DrawString> (); 
 		}
 
 		void Update ()
@@ -47,12 +59,12 @@ namespace GXPEngine
 				mainMenu ();
 				break;
 			case menuState.LevelSelect:
-				levelSelect ();
+				levelSelectMenu ();
 				break;
 			default:
 				mainMenu ();
 				break;
-			
+
 			}
 
 
@@ -62,49 +74,60 @@ namespace GXPEngine
 
 		private void mainMenu ()
 		{
-			_menuStrings = new DrawString ("Play", game.width / 2, 20, _font, _defaultColor);
+			
 
-			if (checkMouseOver (_menuStrings.x, _menuStrings.y, _menuStrings.width, _menuStrings.height)) {
-				
-				_menuStrings.SetColor (255, 0, 0);
+			if (checkMouseOver (_playButton.x, _playButton.y, _playButton.width, _playButton.height)) {
+
+				_playButton.SetColor (255, 0, 0);
 				if (Input.GetMouseButtonDown (0)) {
 					play ();
 				}
 			} else {
-				_menuStrings.SetColor (255, 255, 255);
+				_playButton.SetColor (255, 255, 255);
 			}
-			AddChild (_menuStrings);
 
-			_menuStrings = new DrawString ("Quit", game.width / 2, 50, _font, _defaultColor);
 
-			if (checkMouseOver (_menuStrings.x, _menuStrings.y, _menuStrings.width, _menuStrings.height)) {
 
-				_menuStrings.SetColor (255, 0, 0);
+			if (checkMouseOver (_quitButton.x, _quitButton.y, _quitButton.width, _quitButton.height)) {
+
+				_quitButton.SetColor (255, 0, 0);
 				if (Input.GetMouseButtonDown (0)) {
 					quit ();
 				}
 			} else {
-				_menuStrings.SetColor (255, 255, 255);
+				_quitButton.SetColor (255, 255, 255);
 			}
-			AddChild (_menuStrings);
 
 		}
 
 		private void play ()
 		{
 			Console.WriteLine ("play");
-			
-			foreach (GameObject child in game.GetChildren()) {
-				if (child is Level) {
-					child.visible = true;
-					this.visible = false;
-					return;
+
+//			foreach (GameObject child in game.GetChildren()) {
+//				if (child is Level) {
+//					child.visible = true;
+//					this.visible = false;
+//					return;
+//				}
+//			}
+			_menuState = menuState.LevelSelect;
+			foreach (GameObject child in GetChildren()) {
+				if (child is DrawString) {
+					child.visible = false;
 				}
 			}
-			_menuState = menuState.LevelSelect;
-//			Level level = new Level ();
-//			game.AddChild (level);
-//			this.visible = false;
+			int i = 20;
+			foreach (string levelName in _levelImporter.GetLevels()) {
+				_levelButtons.Add (new DrawString (levelName, game.width / 2, i, _font, _defaultColor));
+				i += 60;
+			}
+
+			_levelButtonsArray = _levelButtons.ToArray ();
+			for (int k = 0; k < _levelButtonsArray.Length; k++) {
+				AddChild (_levelButtonsArray [k]);
+			}
+
 		}
 
 		private void quit ()
@@ -115,14 +138,30 @@ namespace GXPEngine
 
 		private void levelSelectMenu ()
 		{
+			for (int k = 0; k < _levelButtonsArray.Length; k++) {
+				if (checkMouseOver (_levelButtonsArray [k].x, _levelButtonsArray [k].y, _levelButtonsArray [k].width, _levelButtonsArray [k].height)) {
+
+					_levelButtonsArray [k].SetColor (255, 0, 0);
+					if (Input.GetMouseButtonDown (0)) {
+						playLevel (_levelImporter.GetLevels()[k]);
+					}
+				} else {
+					_levelButtonsArray [k].SetColor (255, 255, 255);
+				}
+			}
+
+
+		
+
 		}
 
-
-
-		private void levelSelect ()
+		private void playLevel (string levelName)
 		{
-			
+			Level level = new Level (levelName);
+			game.AddChild (level);
+			this.visible = false;
 		}
+
 
 		private bool checkMouseOver (float buttonX, float buttonY, float buttonWidth, float buttonHeight)
 		{
@@ -134,4 +173,3 @@ namespace GXPEngine
 
 	}
 }
-

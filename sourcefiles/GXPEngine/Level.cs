@@ -14,19 +14,20 @@ namespace GXPEngine
 		LevelImporter levelImporter;
 		private int _score;
 		private float _time = 60;
+		private string _currentLevel;
 
-		public Level () : base ()
+		public Level (string level) : base ()
 		{
 			
 			game.Add (this);
-
+			_currentLevel = level;
 			Canvas canvas = new Canvas (game.width, game.height);
 			canvas.graphics.FillRectangle (new SolidBrush (Color.FromArgb (125, 106, 148)), new Rectangle (0, 0, game.width, game.height));
 			AddChild (canvas);
 		
 			player = new Player ();
 			scoreBoard = new HUD ();
-			levelImporter = new LevelImporter ();
+			levelImporter = new LevelImporter (level);
 			tileRenderer = new TileRenderer ();
 			tileRenderer.GetTiles (levelImporter, player);
 			this.AddChild (tileRenderer);
@@ -59,7 +60,7 @@ namespace GXPEngine
 				
 		}
 		public void ResetLevel(){
-			Level level = new Level ();
+			Level level = new Level (_currentLevel);
 			game.AddChild (level);
 			Console.WriteLine ("reset");
 			this.Destroy ();

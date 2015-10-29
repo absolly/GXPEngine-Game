@@ -17,11 +17,11 @@ namespace GXPEngine
 		/// <returns><c>true</c>, If successful, <c>false</c> otherwise.</returns>
 		protected bool move (float moveX, float moveY)
 		{
+			
 			x = x + moveX;
 			y = y + moveY;
 
 			bool canMove = true;
-				
 			foreach (GameObject other in GetCollisions()) {
 				canMove = canMove && handleCollision (other, moveX, moveY);
 			}

@@ -42,5 +42,10 @@ namespace GXPEngine
 
 			graphics.DrawString (text, font, brush, _position);
 		}
+		public void Clear(){
+			graphics.Clear (Color.Empty);
+			this.Destroy();
+		}
+			
 	}
 }

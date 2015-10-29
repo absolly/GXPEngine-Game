@@ -51,7 +51,7 @@ namespace GXPEngine
 
 
 			if (!_isDead) {
-				checkPickup ();
+				checkSpecialColisions ();
 
 				_playerState = playerState.InAir;
 
@@ -192,14 +192,19 @@ namespace GXPEngine
 		/// <summary>
 		/// Checks if a coin was picked up.
 		/// </summary>
-		/// <returns><c>true</c>, if pickup was detected, <c>false</c> otherwise.</returns>
-		private void checkPickup ()
+		private void checkSpecialColisions ()
 		{
 			foreach (GameObject other in GetCollisions()) {
-				if (other is Coin && other.x > (x - 16) && other.x < (x + 16) && other.y > (y - 16) && other.y < (y + 32)) {
+				if (other is Coin) {
 					Coin coin = other as Coin;
 					coin.destoryCoin ();
 					setScore (1);
+				}
+				if (other is Tile){
+					Tile tile = other as Tile;
+					if (tile.currentFrame == 3) {
+						_isDead = true;
+					}
 				}
 			}
 		}
@@ -208,7 +213,7 @@ namespace GXPEngine
 		{
 
 			_velocityY += 1.0f;
-			
+
 			if (_velocityY > 16.0f)
 				_velocityY = 16.0f;
 			
