@@ -17,7 +17,6 @@ namespace GXPEngine
 		private int wallJumpFrame = 5;
 		private float wallJumpDirection;
 		private float previousWallJumpDirection;
-		private float _gravityTick;
 
 		private enum playerState
 		{
@@ -31,9 +30,12 @@ namespace GXPEngine
 
 		playerState _playerState;
 
-		//http://opengameart.org/content/mv-platformer-male-32x64
+		/// <summary>
+		/// Initializes a new instance of the <see cref="GXPEngine.Player"/> class.
+		/// Sprite: http://opengameart.org/content/mv-platformer-male-32x64
+		/// </summary>
 		public Player () : base ("ninja_full.png", 10, 3)
-		{	
+		{
 			_velocityY = 2.0f;
 			_moveSpeed = 4;
 			_frame = 0.0f;
@@ -43,16 +45,17 @@ namespace GXPEngine
 
 		void Update ()
 		{
+			//if level isn't visible stop movement
+			if (!parent.visible)
+				return;
 			
-
-			_grounded = false;
-			_frame += 0.5f;
-			_gravityTick += 1;
-
-
 			if (!_isDead) {
+				_grounded = false;
+				_frame += 0.5f;
+
 				checkSpecialColisions ();
 
+				//fallback playerstate
 				_playerState = playerState.InAir;
 
 				applyGravity ();
@@ -80,11 +83,16 @@ namespace GXPEngine
 			checkFallDamage ();
 		}
 
+
+		//Default animation
 		private void Idle ()
 		{
 			currentFrame = 0;
 		}
 
+		/// <summary>
+		/// Running animation.
+		/// </summary>
 		void Running ()
 		{
 			if (_frame > 1) {
@@ -96,7 +104,9 @@ namespace GXPEngine
 			}
 		}
 
-
+		/// <summary>
+		/// Inair animation.
+		/// </summary>
 		private void InAir ()
 		{
 			if (_velocityY < 0) {
@@ -112,37 +122,52 @@ namespace GXPEngine
 			}
 		}
 
+		/// <summary>
+		/// Sliding animation.
+		/// </summary>
 		private void Sliding ()
 		{
 			_velocityY -= 2.0f;
-			if (_velocityY < 3.0f) {
-				_velocityY = 3.0f;
+			if (_velocityY < 4.0f) {
+				_velocityY = 4.0f;
 
 			}
 			currentFrame = 20;
-			if (Input.GetKey (Key.SPACE) || Input.GetKeyDown (Key.UP)) {
+
+			//if sliding and press space , try to walljump
+			if (Input.GetKey (Key.SPACE) || Input.GetKeyDown (Key.UP) || Input.GetKeyDown (Key.Z)) {
 				wallJumpFrame = 1;
 				wallJumpDirection = -scaleX;
 
 			}
 		}
 
+		/// <summary>
+		/// Walljump animation
+		/// </summary>
 		private void wallJump ()
 		{
+			//if walljumped from oposite wall
 			if (wallJumpFrame < 8 && wallJumpDirection != previousWallJumpDirection) {
 				_velocityY -= 7.0f / wallJumpFrame;
-				if (_velocityY < -11.0f) {
-					_velocityY = -11.0f;
+				if (_velocityY < -8.0f) {
+					_velocityY = -8.0f;
 				}
+
 				wallJumpFrame++;
 			} else {
+				//disable walljump until both requirements are met again
 				previousWallJumpDirection = wallJumpDirection;
-				wallJumpFrame = 6;
+				wallJumpFrame = 8;
 			}
 		}
 
+		/// <summary>
+		/// Checks the fall damage, plays the impact sound if died.
+		/// </summary>
 		private void checkFallDamage ()
 		{
+			
 			if ((_grounded && _groundHitSpeed >= 15.5f) || _isDead) {
 				_isDead = true;
 
@@ -184,11 +209,6 @@ namespace GXPEngine
 			return _score;
 		}
 
-		private void setVelocityY (float velocityY)
-		{
-			_velocityY = velocityY;
-		}
-
 		/// <summary>
 		/// Checks if a coin was picked up.
 		/// </summary>
@@ -197,38 +217,51 @@ namespace GXPEngine
 			foreach (GameObject other in GetCollisions()) {
 				if (other is Coin) {
 					Coin coin = other as Coin;
-					coin.destoryCoin ();
+					coin.Destroy ();
 					setScore (1);
 				}
-				if (other is Tile){
+				if (other is Tile) {
 					Tile tile = other as Tile;
 					if (tile.currentFrame == 3) {
 						_isDead = true;
+					}
+					if (tile.currentFrame == 1) {
+						Console.WriteLine ("Finished Level");
+						Level level = parent as Level;
+						level.NextLevel ();
 					}
 				}
 			}
 		}
 
+		/// <summary>
+		/// Applies the gravity, also sets the grounded state.
+		/// </summary>
 		private void applyGravity ()
 		{
+			//minimum acceleration, makes grounded state not flip out
+			if (_velocityY >= 0.0f && _velocityY < 1.0f)
+				_velocityY += 1.0f;
+			else
+				_velocityY += 0.5f;
 
-			_velocityY += 1.0f;
-
+			//maximum downward velocity, higher then 16 will make you go trough tiles(they have a 16px height)
 			if (_velocityY > 16.0f)
 				_velocityY = 16.0f;
-			
-			if (move (0, _velocityY) == false) {
+
+			//try to move down, if you can't set grounded
+			if (move (0, (int)_velocityY) == false) {
 				_grounded = true;
 				wallJumpDirection = 0.0f;
 				_groundHitSpeed = _velocityY;
 				_velocityY = 0.0f;
 				_playerState = playerState.Idle;
 			}
-			_gravityTick = 0;
-
-
 		}
 
+		/// <summary>
+		/// Applies the player movement according to user input.
+		/// </summary>
 		private void applyPlayerMovement ()
 		{
 			if (Input.GetKey (Key.LEFT)) {
@@ -258,7 +291,7 @@ namespace GXPEngine
 			}
 
 			if ((Input.GetKeyDown (Key.UP) || Input.GetKeyDown (Key.Z) || Input.GetKeyDown (Key.SPACE)) && _grounded) {
-				_velocityY -= 11.0f;
+				_velocityY -= 8.0f;
 
 			}
 		}

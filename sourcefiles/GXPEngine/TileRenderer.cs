@@ -13,7 +13,9 @@ namespace GXPEngine
 		List<AnimationSprite> tiles;
 
 
-
+		/// <summary>
+		/// Initializes a new instance of the <see cref="GXPEngine.TileRenderer"/> class.
+		/// </summary>
 		public TileRenderer () : base ()
 		{
 		}
@@ -35,7 +37,6 @@ namespace GXPEngine
 			//Go trough the lines
 			foreach (string s in levelimporter.GetLevel()) {
 				int[] csvArray = s.Split (',').Select (int.Parse).ToArray ();
-//				Console.WriteLine (s);
 				int x = 0;
 
 				//Go trought the cells
@@ -46,46 +47,39 @@ namespace GXPEngine
 					
 					} 
 
+
 					if (i == 1) {
+						//make a coin
 						Coin coin = new Coin ();
 						coin.x = x;
 						coin.y = y;
 						this.AddChild (coin);
 						tile.visible = false;
+					} else if (i == 5) {
+						//Spawn player here
+						player.x = x;
+						player.y = y - 8;
+						tile.SetFrame (i - 1);
+						tile.y = y;
+						tile.x = x;
 					} else {
-						if (i == 5) {
-							//Spawn player here
-							player.x = x;
-							player.y = y - 8;
-							tile.SetFrame (i - 1);
-							tile.y = y;
-							tile.x = x;
-						} else {
-							//render the tile with the coronsponding id
-							tile.SetFrame (i - 1);
-							tile.y = y;
-							tile.x = x;
-							tile.SetColor (1, 1, 1);
-						}
+						//set the tile to the correct frame
+						tile.SetFrame (i - 1);
+						tile.y = y;
+						tile.x = x;
+						tile.SetColor (1, 1, 1);
 					}
-						
 
-
+					//render the tile
 					this.AddChild (tile);
 					tiles.Add (tile);
 
 					x += 16;
-
-
 				}
 				y += 16;
 			}
 			return tiles;
 		}
-
-
-
-
 	}
 }
 

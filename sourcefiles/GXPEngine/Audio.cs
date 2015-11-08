@@ -4,13 +4,16 @@ namespace GXPEngine
 {
 	public class Audio : Sound
 	{
-		private SoundChannel _bgAudio;
+		/// <summary>
+		/// Initializes a new instance of the <see cref="GXPEngine.Audio"/> class.
+		/// </summary>
+		/// <param name="source">Audio source file.</param>
+		/// <param name="looping">If set to <c>true</c> looping.</param>
+		/// <param name="streaming">If set to <c>true</c> streaming.</param>
 		public Audio (string source, bool looping, bool streaming) : base(source, looping, streaming)
 		{
-			
-			_bgAudio = Play();
-			_bgAudio.Frequency = 44100f;
-
+			// yes, i'm accually this lazy :p
+			Play();
 		}
 	}
 }

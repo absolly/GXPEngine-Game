@@ -70,11 +70,16 @@
     <Compile Include="Coin.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="MoveableSprite.cs" />
-    <Compile Include="GameOverCheck.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="DrawString.cs" />
     <Compile Include="HUD.cs" />
-    <Compile Include="Button.cs" />
+    <Compile Include="jacobalbano-glide-0a3bb5b07899 2\Ease.cs" />
+    <Compile Include="jacobalbano-glide-0a3bb5b07899 2\GlideInfo.cs" />
+    <Compile Include="jacobalbano-glide-0a3bb5b07899 2\Lerper.cs" />
+    <Compile Include="jacobalbano-glide-0a3bb5b07899 2\Tween.cs" />
+    <Compile Include="jacobalbano-glide-0a3bb5b07899 2\Tweener.cs" />
+    <Compile Include="SpawnPoint.cs" />
+    <Compile Include="LevelLister.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GXPEngine\" />

@@ -6,45 +6,37 @@ namespace GXPEngine
 {
 	public class DrawString : Canvas
 	{
-		private Font _font;
-		private Brush _brush;
+
 		private PointF _position;
+		private StringFormat _stringFormat;
 
-		public DrawString (string text, int posX, int posY) : base (text.Length * 17, 40)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="GXPEngine.DrawString"/> class.
+		/// </summary>
+		/// <param name="text">Text to be drawn.</param>
+		/// <param name="posX">Position x.</param>
+		/// <param name="posY">Position y.</param>
+		/// <param name="font">Font.</param>
+		/// <param name="brush">SolidBrush.</param>
+		public DrawString (string text, int posX, int posY, Font font, SolidBrush brush) : base (text.Length * 20, (int)font.GetHeight())
 		{
-			graphics.Clear (Color.Empty);
-			_position = new PointF (0, 0);
-
-			PrivateFontCollection pfc = new PrivateFontCollection ();
-			pfc.AddFontFile ("Dolce Vita.ttf");
-			_font = new Font (pfc.Families [0], 20, FontStyle.Regular);
-
-			_brush = new SolidBrush (Color.White);
-
+			//set position of text on relative to the canvas
+			_position = new PointF (width/2,0);
 			SetOrigin (width / 2, height / 2);
+
+			//set postion of the canvas
 			this.x = posX;
 			this.y = posY;
 
-			graphics.Clear (Color.Empty);
-			graphics.DrawString (text, _font, _brush, _position);
-		}
+			//center the text horizontally
+			_stringFormat = new StringFormat ();
+			_stringFormat.Alignment = StringAlignment.Center;
 
-		public DrawString (string text, int posX, int posY, Font font, SolidBrush brush) : base (text.Length * 17, (int)font.GetHeight())
-		{
-			graphics.Clear (Color.Empty);
-			_position = new PointF (0, 0);
-
-			SetOrigin (width / 2, height / 2);
-			this.x = posX;
-			this.y = posY;
-
+			//clear the canvas
 			graphics.Clear (Color.Empty);
 
-			graphics.DrawString (text, font, brush, _position);
-		}
-		public void Clear(){
-			graphics.Clear (Color.Empty);
-			this.Destroy();
+			//draw the string
+			graphics.DrawString (text, font, brush, _position, _stringFormat);
 		}
 			
 	}

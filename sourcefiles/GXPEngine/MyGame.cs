@@ -1,28 +1,21 @@
 using System;
 using GXPEngine;
-using System.Drawing;
-using System.IO;
-using System.Text;
-using System.Linq;
-
-//Code convension
-//Config is ALLCAPS
-//private var is _variable
-
 
 public class MyGame : Game
 {
- 
+
+	/// <summary>
+	/// Initializes a new instance of the <see cref="MyGame"/> class.
+	/// </summary>
 	public MyGame () : base (1280, 720, false)
 	{
 		MainMenu menu = new MainMenu();
 		AddChild (menu);
 	}
 
-	void Update ()
-	{	
-	}
-
+	/// <summary>
+	/// The entry point of the program, where the program control starts and ends.
+	/// </summary>
 	static void Main ()
 	{
 		new MyGame ().Start ();

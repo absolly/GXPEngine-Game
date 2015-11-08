@@ -4,7 +4,12 @@ namespace GXPEngine
 {
 	public class MoveableSprite : AnimationSprite
 	{
-
+		/// <summary>
+		/// Initializes a new instance of the <see cref="GXPEngine.MoveableSprite"/> class.
+		/// </summary>
+		/// <param name="filename">Filename.</param>
+		/// <param name="cols">Colums.</param>
+		/// <param name="rows">Rows.</param>
 		public MoveableSprite (string filename, int cols, int rows) : base (filename, cols, rows)
 		{
 		}
@@ -43,7 +48,16 @@ namespace GXPEngine
 		{
 			if (other is Tile) {
 				Tile tile = other as Tile;
+
 				if (tile.currentFrame == 2) {
+					//Slightly darken ground tiles you touch
+					tile.SetColor (0.9f,0.9f,0.9f);
+
+					//Slightly force the tile downward
+					if(moveY >= 16)
+					tile.y += 3;
+					
+
 					return resolveCollision (other as Sprite, moveX, moveY);
 				}
 			}
@@ -81,7 +95,6 @@ namespace GXPEngine
 			}
 			return true;
 		}
-
 
 
 
