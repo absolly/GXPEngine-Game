@@ -24,7 +24,6 @@ namespace GXPEngine
 		private Sound _slideSound;
 		private SoundChannel _footStepChannel;
 		private SoundChannel _slideChannel;
-		private Weapon _weapon;
 
 		private enum playerState
 		{
@@ -45,7 +44,6 @@ namespace GXPEngine
 		public Player (int lives) : base ("Sprites/ninja_full.png", 10, 3)
 		{
 
-			_weapon = new Weapon ();
 
 			_lives = lives;
 			_moveSpeed = 4;
@@ -258,10 +256,7 @@ namespace GXPEngine
 		{
 			_score = setScore;
 		}
-
-		public void setWeapon(Weapon weapon){
-			_weapon = weapon;
-		}
+			
 
 		/// <summary>
 		/// Gets the score.
