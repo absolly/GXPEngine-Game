@@ -12,7 +12,7 @@ namespace GXPEngine
 		public string name;
 		private Collider _collider;
 		
-		private List<GameObject> _children = new List<GameObject>();
+		private List<GameObject> _children = new List<GameObject> ();
 		private GameObject _parent = null;
 		
 		public bool visible = true;
@@ -25,16 +25,18 @@ namespace GXPEngine
 		/// Since GameObjects contain a display hierarchy, a GameObject can be used as a container for other objects.
 		/// Other objects can be added using child commands as AddChild.
 		/// </summary>
-		public GameObject()
+		public GameObject ()
 		{
-			_collider = createCollider();
-			if (Game.main != null) Game.main.Add(this);
+			_collider = createCollider ();
+			if (Game.main != null)
+				Game.main.Add (this);
 		}
 
 		/// <summary>
 		/// Return the collider to use for this game object, null is allowed 
 		/// </summary>
-		protected virtual Collider createCollider () {
+		protected virtual Collider createCollider ()
+		{
 			return null;
 		}
 
@@ -50,8 +52,9 @@ namespace GXPEngine
 		/// </value>
 		public int Index {
 			get { 
-				if (parent == null) return -1;
-				return parent._children.IndexOf(this);
+				if (parent == null)
+					return -1;
+				return parent._children.IndexOf (this);
 			}
 		}
 
@@ -94,18 +97,22 @@ namespace GXPEngine
 		/// </summary>
 		public virtual void Destroy ()
 		{
-			if (!game.Contains (this)) return;
-			OnDestroy();
+			if (!game.Contains (this))
+				return;
+			OnDestroy ();
 
 			//detach all children
 			while (_children.Count > 0) {
-				GameObject child = _children[0];
-				if (child != null) child.Destroy();
+				GameObject child = _children [0];
+				if (child != null)
+					child.Destroy ();
 			}
 			//detatch from parent
-			if (parent != null) parent = null;
+			if (parent != null)
+				parent = null;
 			//remove from game
-			if (Game.main != null) Game.main.Remove (this);
+			if (Game.main != null)
+				Game.main.Remove (this);
 		}
 
 		//------------------------------------------------------------------------------------------------------------------------
@@ -118,7 +125,7 @@ namespace GXPEngine
 		/// </summary>
 		public GameObject[] GetCollisions ()
 		{
-			return game.GetGameObjectCollisions(this);
+			return game.GetGameObjectCollisions (this);
 		}
 		
 		//------------------------------------------------------------------------------------------------------------------------
@@ -128,30 +135,33 @@ namespace GXPEngine
 		/// This function is called by the renderer. You can override it to change this object's rendering behaviour.
 		/// When not inside the GXPEngine package, specify the parameter as GXPEngine.Core.GLContext.
 		/// This function was made public to accomoadate split screen rendering. Use SetViewPort for that.
- 		/// </summary>
+		/// </summary>
 		/// <param name='glContext'>
 		/// Gl context, will be supplied by internal caller.
 		/// </param>
-		public virtual void Render(GLContext glContext) {
+		public virtual void Render (GLContext glContext)
+		{
 			if (visible) {
-				glContext.PushMatrix(matrix);
+				glContext.PushMatrix (matrix);
 				
 				RenderSelf (glContext);
 				foreach (GameObject child in GetChildren()) {
-					child.Render(glContext);
+					child.Render (glContext);
 				}
 				
-				glContext.PopMatrix();
+				glContext.PopMatrix ();
 			}
 		}
 		
 		//------------------------------------------------------------------------------------------------------------------------
 		//														RenderSelf
 		//------------------------------------------------------------------------------------------------------------------------
-		protected virtual void RenderSelf(GLContext glContext) {
-			if (visible == false) return;
-			glContext.PushMatrix(matrix);
-			glContext.PopMatrix();
+		protected virtual void RenderSelf (GLContext glContext)
+		{
+			if (visible == false)
+				return;
+			glContext.PushMatrix (matrix);
+			glContext.PopMatrix ();
 		}
 		
 		//------------------------------------------------------------------------------------------------------------------------
@@ -165,12 +175,12 @@ namespace GXPEngine
 			get { return _parent; }
 			set { 
 				if (_parent != null) {
-					_parent.removeChild(this);
+					_parent.removeChild (this);
 					_parent = null;
 				}
 				_parent = value;
 				if (value != null) {
-					_parent.addChild(this);
+					_parent.addChild (this);
 				}
 			}
 		}
@@ -184,7 +194,8 @@ namespace GXPEngine
 		/// <param name='child'>
 		/// Child object to add.
 		/// </param>
-		public void AddChild(GameObject child) {
+		public void AddChild (GameObject child)
+		{
 			child.parent = this;	
 		}
 		
@@ -207,17 +218,20 @@ namespace GXPEngine
 		//------------------------------------------------------------------------------------------------------------------------
 		//														removeChild()
 		//------------------------------------------------------------------------------------------------------------------------
-		private void removeChild(GameObject child) {
-			_children.Remove(child);
+		private void removeChild (GameObject child)
+		{
+			_children.Remove (child);
 
 		}
 		
 		//------------------------------------------------------------------------------------------------------------------------
 		//														addChild()
 		//------------------------------------------------------------------------------------------------------------------------
-		private void addChild(GameObject child) {
-			if (child.HasChild(this)) return; //no recursive adding
-			_children.Add(child);
+		private void addChild (GameObject child)
+		{
+			if (child.HasChild (this))
+				return; //no recursive adding
+			_children.Add (child);
 			return;
 		}
 		
@@ -235,14 +249,17 @@ namespace GXPEngine
 		/// <param name='index'>
 		/// Index in the child list where the object should be added.
 		/// </param>
-		public void AddChildAt(GameObject child, int index) {
+		public void AddChildAt (GameObject child, int index)
+		{
 			if (child.parent != this) {
-				AddChild(child);
+				AddChild (child);
 			}
-			if (index < 0) index = 0;
-			if (index >= _children.Count) index = _children.Count - 1;
-			_children.Remove(child);
-			_children.Insert(index, child);			
+			if (index < 0)
+				index = 0;
+			if (index >= _children.Count)
+				index = _children.Count - 1;
+			_children.Remove (child);
+			_children.Insert (index, child);			
 		}
 		
 		//------------------------------------------------------------------------------------------------------------------------
@@ -254,10 +271,12 @@ namespace GXPEngine
 		/// <param name='gameObject'>
 		/// The GameObject that should be tested.
 		/// </param>
-		public bool HasChild(GameObject gameObject) {
+		public bool HasChild (GameObject gameObject)
+		{
 			GameObject par = gameObject;
 			while (par != null) {
-				if (par == this) return true;
+				if (par == this)
+					return true;
 				par = par.parent;
 			}
 			return false;
@@ -270,7 +289,8 @@ namespace GXPEngine
 		/// Returns a list of all children that belong to this object.
 		/// The function returns System.Collections.Generic.List<GameObject>.
 		/// </summary>
-		public List<GameObject> GetChildren() {
+		public List<GameObject> GetChildren ()
+		{
 			return _children;
 		}
 		
@@ -288,12 +308,16 @@ namespace GXPEngine
 		/// <param name='index'>
 		/// Index.
 		/// </param>
-		public void SetChildIndex(GameObject child, int index) {
-			if (child.parent != this) AddChild(child);
-			if (index < 0) index = 0;
-			if (index >= _children.Count) index = _children.Count - 1;
-			_children.Remove(child);
-			_children.Insert(index, child);
+		public void SetChildIndex (GameObject child, int index)
+		{
+			if (child.parent != this)
+				AddChild (child);
+			if (index < 0)
+				index = 0;
+			if (index >= _children.Count)
+				index = _children.Count - 1;
+			_children.Remove (child);
+			_children.Insert (index, child);
 		}
 		
 		//------------------------------------------------------------------------------------------------------------------------
@@ -308,7 +332,8 @@ namespace GXPEngine
 		/// <param name='other'>
 		/// Other.
 		/// </param>
-		virtual public bool HitTest(GameObject other) {
+		virtual public bool HitTest (GameObject other)
+		{
 			return _collider != null && other._collider != null && _collider.HitTest (other._collider);
 		}
 
@@ -325,9 +350,10 @@ namespace GXPEngine
 		/// <param name='y'>
 		/// The y coordinate to test.
 		/// </param>
-		virtual public bool HitTestPoint(float x, float y) {
-			return _collider != null && _collider.HitTestPoint(x, y);
-		}		
+		virtual public bool HitTestPoint (float x, float y)
+		{
+			return _collider != null && _collider.HitTestPoint (x, y);
+		}
 		
 		//------------------------------------------------------------------------------------------------------------------------
 		//														TransformPoint()
@@ -342,7 +368,8 @@ namespace GXPEngine
 		/// <param name='y'>
 		/// The y coordinate to transform.
 		/// </param>
-		public override Vector2 TransformPoint(float x, float y) {
+		public override Vector2 TransformPoint (float x, float y)
+		{
 			Vector2 ret = base.TransformPoint (x, y);
 			if (parent == null) {
 				return ret;
@@ -364,7 +391,8 @@ namespace GXPEngine
 		/// <param name='y'>
 		/// The y coordinate to transform.
 		/// </param>
-		public override Vector2 InverseTransformPoint(float x, float y) {
+		public override Vector2 InverseTransformPoint (float x, float y)
+		{
 			Vector2 ret = base.InverseTransformPoint (x, y);
 			if (parent == null) {
 				return ret;
@@ -376,8 +404,9 @@ namespace GXPEngine
 		//------------------------------------------------------------------------------------------------------------------------
 		//														ToString()
 		//------------------------------------------------------------------------------------------------------------------------
-		public override string ToString() {
-			return "[" + this.GetType().Name + "::" + name + "]";
+		public override string ToString ()
+		{
+			return "[" + this.GetType ().Name + "::" + name + "]";
 		}
 				
 	}

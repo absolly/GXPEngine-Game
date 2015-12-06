@@ -18,7 +18,7 @@ namespace GXPEngine.Core
 		
 		private Bitmap _bitmap;
 		private int[] _glTexture;
-		private string _filename;
+		private string _filename = "";
 		private int count = 0;
 
 		//------------------------------------------------------------------------------------------------------------------------

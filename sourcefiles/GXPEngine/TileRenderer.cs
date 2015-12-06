@@ -10,6 +10,7 @@ namespace GXPEngine
 {
 	public class TileRenderer : GameObject
 	{
+		//list of tiles
 		List<AnimationSprite> tiles;
 
 
@@ -41,11 +42,11 @@ namespace GXPEngine
 
 				//Go trought the cells
 				foreach (int i in csvArray) {
-					Tile tile = new Tile ("colors.png", 2, 3);
+					Tile tile = new Tile ("Sprites/tiles.png", 2, 3);
 					if (i == 0) {
 						tile.visible = false;
 					
-					} 
+					}
 
 
 					if (i == 1) {

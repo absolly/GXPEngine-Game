@@ -18,10 +18,10 @@ namespace GXPEngine
 		/// <param name="posY">Position y.</param>
 		/// <param name="font">Font.</param>
 		/// <param name="brush">SolidBrush.</param>
-		public DrawString (string text, int posX, int posY, Font font, SolidBrush brush) : base (text.Length * 20, (int)font.GetHeight())
+		public DrawString (string text, int posX, int posY, Font font, SolidBrush brush) : base ((int)(text.Length * font.Size * 0.8), (int)font.GetHeight ())
 		{
 			//set position of text on relative to the canvas
-			_position = new PointF (width/2,0);
+			_position = new PointF (width / 2, 0);
 			SetOrigin (width / 2, height / 2);
 
 			//set postion of the canvas

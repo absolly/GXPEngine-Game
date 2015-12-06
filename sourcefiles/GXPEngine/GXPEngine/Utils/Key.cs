@@ -72,6 +72,7 @@ namespace GXPEngine
 		public const int BACKSPACE	= 295;
 		public const int LEFT_CTRL  = 289;
 		public const int RIGHT_CTRL = 290;
+		public const int NUMPAD_0   = 302;
 		public const int NUMPAD_1   = 303;
 		public const int NUMPAD_2   = 304;
 		public const int NUMPAD_3   = 305;

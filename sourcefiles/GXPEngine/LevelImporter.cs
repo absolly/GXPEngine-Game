@@ -45,16 +45,6 @@ namespace GXPEngine
 			return _linesArray;
 		}
 
-//		public string[] GetLevels ()
-//		{
-//
-//			string[] fileNames = Directory.GetFiles (Directory.GetCurrentDirectory (), "Levels/Level*.txt");
-//			for (int i = 0; i < fileNames.Length; i++) {
-//				fileNames [i] = Path.GetFileName (fileNames [i]).Replace (".txt", "");
-//			}
-//			return fileNames;
-//		}
-
 	}
 }
 

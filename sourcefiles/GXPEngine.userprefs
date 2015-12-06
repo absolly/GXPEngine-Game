@@ -1,28 +1,16 @@
 ﻿<Properties StartupItem="GXPEngine/GXPEngine.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="GXPEngine/MainMenu.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="GXPEngine/GXPEngine.csproj">
     <Files>
-      <File FileName="GXPEngine/MainMenu.cs" Line="100" Column="42" />
-      <File FileName="GXPEngine/GXPEngine/AnimationSprite.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/Level.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/MyGame.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/Coin.cs" Line="1" Column="1" />
-      <File FileName="GXPEngine/Player.cs" Line="88" Column="21" />
-      <File FileName="GXPEngine/MoveableSprite.cs" Line="49" Column="5" />
+      <File FileName="GXPEngine/Menu.cs" Line="1" Column="1" />
+      <File FileName="GXPEngine/MoveableSprite.cs" Line="1" Column="1" />
+      <File FileName="GXPEngine/GXPEngine/Sprite.cs" Line="1" Column="1" />
+      <File FileName="GXPEngine/GXPEngine/Managers/CollisionManager.cs" Line="1" Column="1" />
+      <File FileName="GXPEngine/GXPEngine/Game.cs" Line="1" Column="1" />
+      <File FileName="GXPEngine/GXPEngine/GameObject.cs" Line="1" Column="1" />
+      <File FileName="GXPEngine/Player.cs" Line="1" Column="1" />
+      <File FileName="GXPEngine/GXPEngine.csproj" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State name="__root__">
-          <Node name="GXPEngine" expanded="True">
-            <Node name="GXPEngine" expanded="True">
-              <Node name="GXPEngine" expanded="True" />
-              <Node name="jacobalbano-glide-0a3bb5b07899 2" expanded="True" />
-              <Node name="MainMenu.cs" selected="True" />
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
